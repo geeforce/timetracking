@@ -22,7 +22,7 @@
 			$(".timerow").removeClass("bg-primary");
 			$(this).addClass("bg-primary");
 			$(".tableDiv").empty();
-			$(".tableDiv_"+projectId).load("/timeTable?projectId="+projectId+"&timeType="+timeType,function(fn){
+			$(".tableDiv_"+projectId).load("/timeTable?projectId="+projectId+"&timeType="+timeType,function(fn){ 
 				//alert(fn)
 			});
 			//alert(timeType);
