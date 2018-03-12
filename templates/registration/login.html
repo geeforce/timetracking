@@ -1,0 +1,29 @@
+{% extends "timetracking/mainsite.html" %}
+
+{% load widget_tweaks %}
+{% block content %}
+
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Login</b></div>
+		<div class="panel-body panelBox_{{project.id}} panelBox">
+			<div class="form-group">
+				<td>{{ form.username.label_tag }}</td>
+				<td>{{ form.username|add_class:"form-control" }}</td>
+			</div>
+			<div class="form-group">
+				<td>{{ form.password.label_tag }}</td>
+				<td>{{ form.password|add_class:"form-control" }}</td>
+			</div>
+
+			<div class="form-group">
+				<input type="submit" class="btn btn-primary" value="login" />
+			</div>
+			</form>
+		</div>
+</div>
+
+{% endblock %}

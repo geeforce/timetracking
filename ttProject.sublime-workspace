@@ -1,0 +1,798 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"project",
+				"projectName"
+			],
+			[
+				"view",
+				"viewType"
+			],
+			[
+				"new",
+				"newUserProject"
+			],
+			[
+				"proj",
+				"projectName"
+			],
+			[
+				"add",
+				"addProject"
+			],
+			[
+				"pr",
+				"projectName"
+			],
+			[
+				"cell",
+				"cellpadding\tAttr"
+			],
+			[
+				"user",
+				"user_id"
+			],
+			[
+				"t",
+				"type"
+			],
+			[
+				"Tr",
+				"True"
+			],
+			[
+				"userPro",
+				"userProject"
+			],
+			[
+				"pro",
+				"project"
+			],
+			[
+				"e",
+				"except"
+			],
+			[
+				"ta",
+				"table-active"
+			],
+			[
+				"timer",
+				"timerow"
+			],
+			[
+				"tr",
+				"trackedTime"
+			],
+			[
+				"trackedT",
+				"trackedTime"
+			],
+			[
+				"tim",
+				"timerow"
+			],
+			[
+				"today",
+				"todayEntry"
+			],
+			[
+				"to",
+				"todayTime"
+			],
+			[
+				"se",
+				"seconds"
+			],
+			[
+				"hou",
+				"hours"
+			],
+			[
+				"time",
+				"timeFromSeconds"
+			],
+			[
+				"las",
+				"lastRecord"
+			],
+			[
+				"lastRecord",
+				"lastRecordTime"
+			],
+			[
+				"o",
+				"objects"
+			],
+			[
+				"a",
+				"align\tAttr"
+			],
+			[
+				"ope",
+				"openEntry"
+			],
+			[
+				"s",
+				"stop"
+			],
+			[
+				"sto",
+				"stoptime"
+			],
+			[
+				"st",
+				"start"
+			],
+			[
+				"tra",
+				"trackingEntry"
+			],
+			[
+				"date",
+				"datetime"
+			],
+			[
+				"la",
+				"last_update"
+			],
+			[
+				"pane",
+				"panelBox_"
+			],
+			[
+				"background-c",
+				"background-color"
+			],
+			[
+				"hour",
+				"hourString"
+			],
+			[
+				"minute",
+				"minuteString"
+			],
+			[
+				"min",
+				"minuteString"
+			],
+			[
+				"second",
+				"secondString"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"table-",
+				"table-cell"
+			],
+			[
+				"thi",
+				"thisParentFlexbox"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "models.py",
+			"settings":
+			{
+				"buffer_size": 1334,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Python/business/business/settings.py",
+			"settings":
+			{
+				"buffer_size": 3167,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "urls.py",
+			"settings":
+			{
+				"buffer_size": 812,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "views.py",
+			"settings":
+			{
+				"buffer_size": 9040,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "templates/timetracking/projects.html",
+			"settings":
+			{
+				"buffer_size": 4211,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "templates/registration/login.html",
+			"settings":
+			{
+				"buffer_size": 723,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "{% extends \"timetracking/mainsite.html\" %}\n{% load widget_tweaks %}\n{% block content %}\n<!--p>{{ projects }}</p-->\n<script type=\"text/javascript\">\n\t$(document).ready(function() {\n\t\t//\n\t\ttimer = false;\n\t\t$(\".startTrack\").click(function(){\n\t\t\tvar projectId = $(this).attr(\"projectId\");\n\t\t\t// stop currently running\n\t\t\t$.ajax({url: \"/stopRunning\"});\n\t\t\t$(\".panelBox\").removeClass(\"activeTimerBox\");\n\t\t\tif(timer !== false){\n\t\t\t\tclearInterval(timer);\n\t\t\t}\n\t\t\t$('.currentTimeHours, .currentTimeMinutes, .currentTimeSeconds').text(\"00\");\n\t\t\t\n\t\t\tvar data = 'projectId=' + projectId;\n            $.ajax({\n                url: \"/startTrack\",\n                type: \"POST\",\n                contentType: \"application/x-www-form-urlencoded; charset=UTF-8\",\n                data: data,\n                success: function (fn) {}\n            });\n\n\t\t\t$(\".stopTrack\").attr(\"disabled\",\"disabled\");\n\t\t\t$(\".startTrack, .stopBtn_\"+projectId).removeAttr(\"disabled\");\n\t\t\t$(this).attr(\"disabled\",\"disabled\");\n\t\t\t// flexbox on top\n\t\t\tvar thisParentFlexbox = $(this).closest(\".projectBox\");\n\t\t\tvar currentOrder = thisParentFlexbox.css(\"order\");\n\t\t\t$(\".projectBox\").each(function () {\n                var iterateOrder = $(this).css(\"order\");\n                if (iterateOrder < currentOrder) {\n                    $(this).css(\"order\", $(this).css(\"order\") * 1 + 1 * 1);\n                }\n            });\n            thisParentFlexbox.css(\"order\", \"1\");\n            $(\".panelBox_\"+projectId).addClass(\"activeTimerBox\");\n            $(window).scrollTop(0);\n            // start timer on frontend\n\t\t\tvar start = new Date;\n            runTimer(start,projectId);\n\t\t});\n\t\t//\n\t\t$(\".stopTrack\").click(function(){\n\t\t\tvar projectId = $(this).attr(\"projectId\");\n\t\t\tvar data = 'projectId=' + projectId;\n            $.ajax({\n                url: \"/stopTrack\",\n                type: \"POST\",\n                contentType: \"application/x-www-form-urlencoded; charset=UTF-8\",\n                data: data,\n                success: function (projectTime) {\n                \t// set overall time\n                \tstaticOverallTime(projectTime.projectTime,projectId);\n                }\n            });\n\n            $(this).attr(\"disabled\",\"disabled\");\n\t\t\t$(\".startBtn_\"+projectId).attr(\"disabled\",false);\n\t\t\t$(\".panelBox_\"+projectId).removeClass(\"activeTimerBox\");\n\t\t\tclearInterval(timer);\n\t\t\t$('.seconds_'+projectId).text(\"00\");\n\t\t\t$('.minutes_'+projectId).text(\"00\");\n\t\t\t$('.hours_'+projectId).text(\"00\");\n\t\t\t\n\t\t});\n\n\n\t\tfunction convertDate(toConvertDate) {\n\t\t\tif(toConvertDate != \"None\"){\n\t\t    \tvar dateTimeBlock = toConvertDate.split(\" \");\n\t\t    \tvar dates = dateTimeBlock[0].split(\"-\");\n\t\t    \tvar year = dates[0];\n\t\t    \tvar month = dates[1];\n\t\t    \tvar day = dates[2];\n\t\t    \tvar times = dateTimeBlock[1].split(\":\");\n\t\t    \tvar hours = times[0];\n\t\t    \tvar minutes = times[1];\n\t\t    \tvar seconds = times[2].split(\".\")[0];\n\t\t    \treturn new Date(year,month,day,hours,minutes,seconds);\n\t\t    \t//console.log(year+\",\"+month+\",\"+day+\",\"+hours+\",\"+minutes+\",\"+seconds);\n\t\t\t}\n\t\t    return toConvertDate;  \n\t\t    //return formattedDate + ' ' + hours + ':' + minutes+\":\"+seconds+\" UTC\"; \n\t\t}\n\t\t\n\n\n\t\t// set static overall time and already running timer\n\t\t{% for project in projects %}\n\t\t\t//convertedDate = convertDate(\"{{project.openStart}}\");\n\t\t\t//console.log(convertedDate);\n\t\t\t//var newDate = new Date(convertedDate);\n\t\t\t//console.log(newDate)\n\t\t\tstaticOverallTime({{project.time}},{{project.id}});\n\t\t\talreadyRunning({{project.id}},\"{{project.openStart}}\");\n\t\t{% endfor %}\n\n\t\t// add project\n\t\t$(\"#addProject\").click(function(){\n\t\t\tvar projectName = $(\".projectName\").val().trim();\n\t\t\tif(projectName != \"\"){\n\t\t\t\tvar data = 'projectName=' + projectName + '&viewType={{projects.viewType}}';\n\t\t        $.ajax({\n\t\t            url: \"/addProject\",\n\t\t            type: \"POST\",\n\t\t            contentType: \"application/x-www-form-urlencoded; charset=UTF-8\",\n\t\t            data: data,\n\t\t            success: function (fn) {\n\t\t            \twindow.location.reload(true);\n\t\t            }\n\t\t        });\n\t\t\t}\n\t\t});\n\t});\n</script>\n<style type=\"text/css\">\n\n</style>\n<div class=\"panel panel-default\">\n\t<div class=\"panel-heading panelHead_{{project.id}} panelHead\"><b>Add Project</b></div>\n\t\t<div class=\"panel-body panelBox_{{project.id}} panelBox\">\n\t\t\t<table cellspacing=\"25\" cellpadding=\"25\" width=\"100%\">\n\t\t\t\t<tr>\n\t\t\t\t\t<td style=\"width:5%\"><input type=\"submit\" class=\"btn btn-primary\" id=\"addProject\" value=\"add\" /></td>\n\t\t\t\t\t<td>{{ form.projectName|add_class:\"form-control projectName\" }}</td>\n\t\t\t\t</tr>\n\t\t\t</table>\n\t\t\t\n\t\t</div>\n</div>\n<div id=\"flexboxWrapper\">\n\t{% for project in projects %}\n\t<div class=\"projectBox\" style=\"order:{{forloop.counter}}\" projectId=\"{{project.id}}\">\n\t\t<div class=\"panel panel-default\">\n\t\t\t<div class=\"panel-heading panelHead_{{project.id}} panelHead\"><b>{{project.name}}</b></div>\n\t\t\t\t<div class=\"panel-body panelBox_{{project.id}} panelBox\">\n\t\t\t\t\t<table>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td class=\"tableCellPadding\">\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-default btn-lg startTrack startBtn_{{project.id}}\" projectId=\"{{project.id}}\">\n\t\t\t\t\t\t\t\t\t<span class=\"glyphicon glyphicon-play\" aria-hidden=\"true\"></span>\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t<td class=\"tableCellPadding\">\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-default btn-lg stopTrack stopBtn_{{project.id}}\" projectId=\"{{project.id}}\" disabled=\"disabled\">\n\t\t\t\t\t\t\t\t\t<span class=\"glyphicon glyphicon-stop\" aria-hidden=\"true\"></span>\n\t\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t<td class=\"tableCellPadding\">\n\t\t\t\t\t\t\t\t<div class=\"currentTimeWrapper\">\n\t\t\t\t\t\t\t\t\t<div class=\"currentTimeRow\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"currentTimeHours hours_{{project.id}} timeString\">\n\t\t\t\t\t\t\t\t\t\t\t00\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"currentTimeDevider timeString\">\n\t\t\t\t\t\t\t\t\t\t\t:\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"currentTimeMinutes minutes_{{project.id}} timeString\">\n\t\t\t\t\t\t\t\t\t\t\t00\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"currentTimeDevider timeString\">\n\t\t\t\t\t\t\t\t\t\t\t:\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"currentTimeSeconds seconds_{{project.id}} timeString\">\n\t\t\t\t\t\t\t\t\t\t\t00\n\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</table>\n\t\t\t\t</div>\n\t\t\t<div class=\"panel-footer overalTime_{{project.id}}\"></div>\n\t\t</div>\n\t</div>\n\t{% endfor %}\n</div>\n{% endblock %}",
+			"file": "templates/timetracking/tracking.html",
+			"file_size": 6485,
+			"file_write_time": 131652722695680258,
+			"settings":
+			{
+				"buffer_size": 6279,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "function timeFromSeconds(seconds){\n\tvar secondString = seconds%60;\n\tif(secondString < 10){\n\t\tsecondString = \"0\"+secondString;\n\t}\n\tvar minutes = parseInt(seconds/60);\n\tvar minuteString = minutes%60;\n\tif(minuteString < 10){\n\t\tminuteString = \"0\"+minuteString;\n\t}\n\tvar hours = parseInt(minutes/60);\n\tvar hourString = hours;\n\tif(hourString < 10){\n\t\thourString = \"0\"+hourString;\n\t}\n\treturn {'hours':hourString,'minutes':minuteString,'seconds':secondString};\n}\n\nfunction runTimer(startTime,projectId){\n\t\t//seconds = 1;\n\ttimer = setInterval(function() {\n\t\tvar seconds =  Math.round((new Date - startTime) / 1000);\n\t\t//console.log(startTime);\n\t\tvar timeString = timeFromSeconds(seconds);\n\t\t$('.seconds_'+projectId).text(timeString.seconds);\n\t\t$('.minutes_'+projectId).text(timeString.minutes);\n\t\t$('.hours_'+projectId).text(timeString.hours);\n\t}, 1000);\n} \nfunction alreadyRunning(projectId,openStart){\n\tif(openStart != \"None\"){\n\t\tvar start = new Date(openStart);\n\t\trunTimer(start,projectId);\n\t\t$(\".panelBox_\"+projectId).addClass(\"activeTimerBox\");\n\t\t$(\".stopBtn_\"+projectId).removeAttr(\"disabled\");\n\t\t$(\".startBtn_\"+projectId).attr(\"disabled\",\"disabled\");\n\t}\n}\nfunction staticOverallTime(seconds,projectId){\n\tvar timeString = timeFromSeconds(seconds);\n\t$(\".overalTime_\"+projectId).text(\"Overall Time: \"+timeString.hours+\":\"+timeString.minutes);\n\t$(\".overalTimeProjectView_\"+projectId).text(timeString.hours+\":\"+timeString.minutes+\":\"+timeString.seconds);\n}\nfunction lastRecord(seconds,projectId){\n\tvar timeString = timeFromSeconds(seconds);\n\t$(\".lastRecord_\"+projectId).text(timeString.hours+\":\"+timeString.minutes+\":\"+timeString.seconds);\n}\nfunction todayTime(seconds,projectId){\n\tvar timeString = timeFromSeconds(seconds);\n\t$(\".today_\"+projectId).text(timeString.hours+\":\"+timeString.minutes+\":\"+timeString.seconds);\n}\nfunction weekTime(seconds,projectId){\n\tvar timeString = timeFromSeconds(seconds);\n\t$(\".thisWeek_\"+projectId).text(timeString.hours+\":\"+timeString.minutes+\":\"+timeString.seconds);\n}\nfunction monthTime(seconds,projectId){\n\tvar timeString = timeFromSeconds(seconds);\n\t$(\".thisMonth_\"+projectId).text(timeString.hours+\":\"+timeString.minutes+\":\"+timeString.seconds);\n}\n",
+			"file": "static/timetracking/js/functions.js",
+			"file_size": 2765,
+			"file_write_time": 131652720736240348,
+			"settings":
+			{
+				"buffer_size": 2177,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "templates/timetracking/timetable.html",
+			"settings":
+			{
+				"buffer_size": 1343,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "tablediv"
+			}
+		},
+		{
+			"file": "templates/timetracking/mainsite.html",
+			"settings":
+			{
+				"buffer_size": 4215,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "static/timetracking/css/style.css",
+			"settings":
+			{
+				"buffer_size": 446,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Python/business",
+		"/D/Python/business/business",
+		"/D/Python/business/timetracking",
+		"/D/Python/business/timetracking/templates",
+		"/D/Python/business/timetracking/templates/registration"
+	],
+	"file_history":
+	[
+		"/D/Python/business/timetracking/forms.py",
+		"/D/Python/business/timetracking/templates/registration/login.html",
+		"/D/Python/business/timetracking/admin.py",
+		"/D/Python/business/business/settings.py",
+		"/D/Python/business/timetracking/static/timetracking/js/datatables.min.js"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"tracking.html",
+			"form",
+			"..",
+			"return",
+			"type",
+			"console",
+			"seconds",
+			"projects",
+			"project",
+			"footer",
+			"h",
+			"messageBottom",
+			"\t\t\n",
+			"data",
+			"\t\t\n",
+			"\t\t\t                    \n",
+			"\t\t\t\n",
+			"log",
+			"conso",
+			"\t\t\t\n",
+			"                    \n",
+			"\t\t\n",
+			"round",
+			"/*if(secondString == 60){\n\t\t\tstartTime = new Date;\n\t\t}*/",
+			"Meta"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "models.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1334,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								218,
+								222
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/D/Python/business/business/settings.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3167,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								867,
+								867
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "urls.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 812,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								812,
+								812
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "views.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9040,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2722,
+								2722
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 540.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "templates/timetracking/projects.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4211,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1064,
+								1064
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 90.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "templates/registration/login.html",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 723,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								68,
+								44
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "templates/timetracking/tracking.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6279,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3628,
+								3628
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 945.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "static/timetracking/js/functions.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2177,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2177,
+								2177
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 540.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "templates/timetracking/timetable.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1343,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1028,
+								1028
+							]
+						],
+						"settings":
+						{
+							"auto_name": "tablediv",
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 180.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "templates/timetracking/mainsite.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4215,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								922,
+								922
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "static/timetracking/css/style.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 446,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								442,
+								442
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "ttProject.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 296.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -1,0 +1,184 @@
+{% extends "timetracking/mainsite.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<!--p>{{ projects }}</p-->
+<script type="text/javascript">
+	$(document).ready(function() {
+		//
+		timer = false;
+		$(".startTrack").click(function(){
+			var projectId = $(this).attr("projectId");
+			// stop currently running
+			$.ajax({url: "/stopRunning"});
+			$(".panelBox").removeClass("activeTimerBox");
+			if(timer !== false){
+				clearInterval(timer);
+			}
+			$('.currentTimeHours, .currentTimeMinutes, .currentTimeSeconds').text("00");
+			
+			var data = 'projectId=' + projectId;
+            $.ajax({
+                url: "/startTrack",
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: data,
+                success: function (fn) {}
+            });
+
+			$(".stopTrack").attr("disabled","disabled");
+			$(".startTrack, .stopBtn_"+projectId).removeAttr("disabled");
+			$(this).attr("disabled","disabled");
+			// flexbox on top
+			var thisParentFlexbox = $(this).closest(".projectBox");
+			var currentOrder = thisParentFlexbox.css("order");
+			$(".projectBox").each(function () {
+                var iterateOrder = $(this).css("order");
+                if (iterateOrder < currentOrder) {
+                    $(this).css("order", $(this).css("order") * 1 + 1 * 1);
+                }
+            });
+            thisParentFlexbox.css("order", "1");
+            $(".panelBox_"+projectId).addClass("activeTimerBox");
+            $(window).scrollTop(0);
+            // start timer on frontend
+			var start = new Date;
+            runTimer(start,projectId);
+		});
+		//
+		$(".stopTrack").click(function(){
+			var projectId = $(this).attr("projectId");
+			var data = 'projectId=' + projectId;
+            $.ajax({
+                url: "/stopTrack",
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: data,
+                success: function (projectTime) {
+                	// set overall time
+                	staticOverallTime(projectTime.projectTime,projectId);
+                }
+            });
+
+            $(this).attr("disabled","disabled");
+			$(".startBtn_"+projectId).attr("disabled",false);
+			$(".panelBox_"+projectId).removeClass("activeTimerBox");
+			clearInterval(timer);
+			$('.seconds_'+projectId).text("00");
+			$('.minutes_'+projectId).text("00");
+			$('.hours_'+projectId).text("00");
+			
+		});
+
+
+		function convertDate(toConvertDate) {
+			if(toConvertDate != "None"){
+		    	var dateTimeBlock = toConvertDate.split(" ");
+		    	var dates = dateTimeBlock[0].split("-");
+		    	var year = dates[0];
+		    	var month = dates[1];
+		    	var day = dates[2];
+		    	var times = dateTimeBlock[1].split(":");
+		    	var hours = times[0];
+		    	var minutes = times[1];
+		    	var seconds = times[2].split(".")[0];
+		    	return new Date(year,month,day,hours,minutes,seconds);
+		    	//console.log(year+","+month+","+day+","+hours+","+minutes+","+seconds);
+			}
+		    return toConvertDate;  
+		    //return formattedDate + ' ' + hours + ':' + minutes+":"+seconds+" UTC"; 
+		}
+		
+
+
+		// set static overall time and already running timer
+		{% for project in projects %}
+			//convertedDate = convertDate("{{project.openStart}}");
+			//console.log(convertedDate);
+			//var newDate = new Date(convertedDate);
+			//console.log(newDate)
+			staticOverallTime({{project.time}},{{project.id}});
+			alreadyRunning({{project.id}},"{{project.openStart}}");
+		{% endfor %}
+
+		// add project
+		$("#addProject").click(function(){
+			var projectName = $(".projectName").val().trim();
+			alert(projectName);
+			if(projectName != ""){
+				var data = 'projectName=' + projectName + '&viewType={{projects.viewType}}';
+		        $.ajax({
+		            url: "/addProject",
+		            type: "POST",
+		            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		            data: data,
+		            success: function (fn) {
+		            	window.location.reload(true);
+		            }
+		        });
+			}
+		});
+	});
+</script>
+<style type="text/css">
+
+</style>
+<div class="panel panel-default">
+	<div class="panel-heading panelHead_{{project.id}} panelHead"><b>Add Project</b></div>
+		<div class="panel-body panelBox_{{project.id}} panelBox">
+			<table cellspacing="25" cellpadding="25" width="100%">
+				<tr>
+					<td style="width:5%"><input type="submit" class="btn btn-primary" id="addProject" value="add" /></td>
+					<td>{{ form.projectName|add_class:"form-control projectName" }}</td>
+				</tr>
+			</table>
+			
+		</div>
+</div>
+<div id="flexboxWrapper">
+	{% for project in projects %}
+	<div class="projectBox" style="order:{{forloop.counter}}" projectId="{{project.id}}">
+		<div class="panel panel-default">
+			<div class="panel-heading panelHead_{{project.id}} panelHead"><b>{{project.name}}</b></div>
+				<div class="panel-body panelBox_{{project.id}} panelBox">
+					<table>
+						<tr>
+							<td class="tableCellPadding">
+								<button type="button" class="btn btn-default btn-lg startTrack startBtn_{{project.id}}" projectId="{{project.id}}">
+									<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+								</button>
+							</td>
+							<td class="tableCellPadding">
+								<button type="button" class="btn btn-default btn-lg stopTrack stopBtn_{{project.id}}" projectId="{{project.id}}" disabled="disabled">
+									<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+								</button>
+							</td>
+							<td class="tableCellPadding">
+								<div class="currentTimeWrapper">
+									<div class="currentTimeRow">
+										<div class="currentTimeHours hours_{{project.id}} timeString">
+											00
+										</div>
+										<div class="currentTimeDevider timeString">
+											:
+										</div>
+										<div class="currentTimeMinutes minutes_{{project.id}} timeString">
+											00
+										</div>
+										<div class="currentTimeDevider timeString">
+											:
+										</div>
+										<div class="currentTimeSeconds seconds_{{project.id}} timeString">
+											00
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			<div class="panel-footer overalTime_{{project.id}}"></div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

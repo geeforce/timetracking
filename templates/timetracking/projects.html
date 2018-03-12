@@ -1,0 +1,127 @@
+{% extends "timetracking/mainsite.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<!--p>{{ values }}</p-->
+<script type="text/javascript">
+	$(document).ready(function() {
+		//
+		timer = false;
+		
+		// set static overall time and already running timer
+		{% for project in projects %}
+			staticOverallTime({{project.time}},{{project.id}});
+			lastRecord({{project.lastRecordTime}},{{project.id}});
+			todayTime({{project.todayTime}},{{project.id}});
+			weekTime({{project.weekTime}},{{project.id}});
+			monthTime({{project.monthTime}},{{project.id}});
+		{% endfor %}
+
+		$(".timerow").click(function(){
+			var projectId = $(this).attr("projectId");
+			var timeType = $(this).attr("timeType");
+			$(".timerow").removeClass("bg-primary");
+			$(this).addClass("bg-primary");
+			$(".tableDiv").empty();
+			$(".tableDiv_"+projectId).load("/timeTable?projectId="+projectId+"&timeType="+timeType,function(fn){
+				//alert(fn)
+			});
+			//alert(timeType);
+		});
+		// add project
+		$("#addProject").click(function(){
+			var projectName = $(".projectName").val().trim();
+			if(projectName != ""){
+				var data = 'projectName=' + projectName + '&viewType={{projects.viewType}}';
+		        $.ajax({
+		            url: "/addProject",
+		            type: "POST",
+		            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		            data: data,
+		            success: function (fn) {
+		            	window.location.reload(true);
+		            }
+		        });
+			}
+		});
+	});
+</script>
+<style type="text/css">
+
+</style>
+<div id="flexboxWrapper">
+	<div class="panel panel-default">
+		<div class="panel-heading panelHead_{{project.id}} panelHead"><b>Add Project</b></div>
+			<div class="panel-body panelBox_{{project.id}} panelBox">
+				<table cellspacing="25" cellpadding="25" width="100%">
+					<tr>
+						<td style="width:5%"><input type="submit" class="btn btn-primary" id="addProject" value="add" /></td>
+						<td>{{ form.projectName|add_class:"form-control projectName" }}</td>
+					</tr>
+				</table>
+				
+			</div>
+	</div>
+	{% for project in projects %}
+	<div class="projectBox" style="order:{{forloop.counter}}" projectId="{{project.id}}">
+		<div class="panel panel-default">
+			<div class="panel-heading panelHead_{{project.id}} panelHead"><b>{{project.name}}</b></div>
+				<div class="panel-body panelBox_{{project.id}} panelBox">
+					<div class="container-fluid" style="min-height:95%; ">
+						 <div class="row">
+			                <div class="col-sm-3">
+								<table class="table table-hover tableProjectTimes" >
+									<tr class="timerow" timeType="last" projectId="{{project.id}}">
+										<td class="tableCellPadding" align="right">
+											<b>Last Record: </b>
+										</td>
+										<td>
+											<div class="lastRecord_{{project.id}}"></div>
+										</td>
+									</tr>
+									<tr class="timerow" timeType="today" projectId="{{project.id}}">
+										<td class="tableCellPadding" align="right">
+											<b>Today: </b>
+										</td>
+										<td>
+											<div class="today_{{project.id}}"></div>
+										</td>
+									</tr>
+									<tr class="timerow" timeType="thisWeek" projectId="{{project.id}}">
+										<td class="tableCellPadding" align="right">
+											<b>This Week: </b>
+										</td>
+										<td>
+											<div class="thisWeek_{{project.id}}"></div>
+										</td>
+									</tr>
+									<tr class="timerow" timeType="thisMonth" projectId="{{project.id}}">
+										<td class="tableCellPadding" align="right">
+											<b>This Month: </b>
+										</td>
+										<td>
+											<div class="thisMonth_{{project.id}}"></div>
+										</td>
+									</tr>
+									<tr class="timerow" timeType="overall" projectId="{{project.id}}">
+										<td class="tableCellPadding" align="right">
+											<b>Overall Time: </b>
+										</td>
+										<td>
+											<div class="overalTimeProjectView_{{project.id}}"></div>
+										</td>
+									</tr>
+								</table>
+			                </div>
+			                <div class="col-sm-9 tableDiv_{{project.id}} tableDiv">
+			                    
+			                </div>
+
+			            </div> 
+					</div>
+					
+				</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

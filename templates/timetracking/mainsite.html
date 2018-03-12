@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Timetracking</title>
+        <meta charset="utf-8" />
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'timetracking/css/bootstrap-3.3.6.min.css' %}" type = "text/css"/>
+        <link rel="stylesheet" href="{% static 'timetracking/css/style.css' %}" type = "text/css"/>
+        <link rel="stylesheet" href="{% static 'timetracking/css/jquery-ui.min.css' %}" type = "text/css"/>
+        <link rel="stylesheet" href="{% static 'timetracking/css/datatables.min.css' %}" type = "text/css"/>
+        <!--link rel="stylesheet" href="{% static 'timetracking/css/editor.dataTables.min.css' %}" type = "text/css"/-->
+        
+        <script src="{% static 'timetracking/js/jquery-3.2.1.min.js' %}"></script> 
+        <script src="{% static 'timetracking/js/jquery-ui-1.12.1.min.js' %}"></script> 
+        <script src="{% static 'timetracking/js/functions.js' %}"></script> 
+        <script src="{% static 'timetracking/js/bootstrap.bundle.min.js' %}"></script> 
+        <script src="{% static 'timetracking/js/datatables.min.js' %}"></script> 
+        <script src="{% static 'timetracking/js/dataTables.bootstrap4.js' %}"></script> 
+        <!--script src="{% static 'timetracking/js/dataTables.editor.min.js' %}"></script--> 
+        <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+
+        <style type="text/css">
+            html,
+            body {
+                height:100%
+            }
+        </style>
+        <script>
+            $(document).ready(function() {
+                $.each($('#navbar').find('li'), function() {
+                    $(this).toggleClass('active', 
+                        window.location.pathname.indexOf($(this).find('a').attr('href')) > -1);
+                }); 
+            });
+        </script>
+    </head>
+
+    <body class="body" style="background-color:#f6f6f6">
+        <div class="container-fluid" style="min-height:95%; ">
+            
+            <nav class="navbar navbar-default" id="navbar">
+              <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/">Timetracking</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    {% if user.is_authenticated %}
+                        <ul class="nav navbar-nav">
+                            <li><a href="/tracking">Tracking<span class="sr-only">(current)</span></a></li>
+                            <li><a href="/projects/?viewType=my">My Projects</a></li>
+                            {% if user.is_superuser %}
+                                <li><a href="/projects/?viewType=all">All Projects</a></li>
+                            {% endif %}
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="/logout">Logout {{ user.username }}</a></li>
+                        </ul>
+                    {% endif %}
+
+                    <!--li><a href="#">Analysis</a></li-->
+                </div><!-- /.navbar-collapse -->
+              </div><!-- /.container-fluid -->
+            </nav>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class='container-fluid'>
+                        {% block content %}
+                        {% endblock %}	
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <footer>
+            <div class="container-fluid" style='margin-left:15px'></div>
+        </footer>	
+
+    </body>
+
+</html>
