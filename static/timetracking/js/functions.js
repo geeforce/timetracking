@@ -60,7 +60,7 @@ function monthTime(seconds,projectId){
 // add project
 $("#addProject").click(function(){
 	var projectName = $(".projectName").val().trim();
-	alert(projectName);
+	//alert(projectName);
 	if(projectName != ""){
 		var data = 'projectName=' + projectName + '&viewType={{projects.viewType}}';
         $.ajax({

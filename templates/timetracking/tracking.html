@@ -103,7 +103,6 @@
 		// add project
 		$("#addProject").click(function(){
 			var projectName = $(".projectName").val().trim();
-			alert(projectName);
 			if(projectName != ""){
 				var data = 'projectName=' + projectName + '&viewType={{projects.viewType}}';
 		        $.ajax({
