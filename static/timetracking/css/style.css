@@ -11,7 +11,7 @@
 	}
 	.currentTimeHours, .currentTimeMinutes, .currentTimeSeconds, .currentTimeDevider{
 		display:table-cell;
-		font-size: 3em;
+		font-size: 2.5em;
 		color: grey;
 	}
 	.tableCellPadding{

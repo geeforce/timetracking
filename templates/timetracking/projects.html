@@ -16,15 +16,16 @@
 			monthTime({{project.monthTime}},{{project.id}});
 		{% endfor %}
 
-		$(".timerow").click(function(){
+		$(".timerow").click(function(e){
 			var projectId = $(this).attr("projectId");
 			var timeType = $(this).attr("timeType");
-			$(".timerow").removeClass("bg-primary");
-			$(this).addClass("bg-primary");
+			$(".timerow").removeClass("active");
+			$(this).addClass("active");
 			$(".tableDiv").empty();
 			$(".tableDiv_"+projectId).load("/timeTable?projectId="+projectId+"&timeType="+timeType,function(fn){ 
 				//alert(fn)
 			});
+			e.preventDefault();
 			//alert(timeType);
 		});
 		// add project 
@@ -66,57 +67,30 @@
 		<div class="panel panel-default">
 			<div class="panel-heading panelHead_{{project.id}} panelHead"><b>{{project.name}}</b></div>
 				<div class="panel-body panelBox_{{project.id}} panelBox">
-					<div class="container-fluid" style="min-height:95%; ">
-						 <div class="row">
-			                <div class="col-sm-3">
-								<table class="table table-hover tableProjectTimes" >
-									<tr class="timerow" timeType="last" projectId="{{project.id}}">
-										<td class="tableCellPadding" align="right">
-											<b>Last Record: </b>
-										</td>
-										<td>
-											<div class="lastRecord_{{project.id}}"></div>
-										</td>
-									</tr>
-									<tr class="timerow" timeType="today" projectId="{{project.id}}">
-										<td class="tableCellPadding" align="right">
-											<b>Today: </b>
-										</td>
-										<td>
-											<div class="today_{{project.id}}"></div>
-										</td>
-									</tr>
-									<tr class="timerow" timeType="thisWeek" projectId="{{project.id}}">
-										<td class="tableCellPadding" align="right">
-											<b>This Week: </b>
-										</td>
-										<td>
-											<div class="thisWeek_{{project.id}}"></div>
-										</td>
-									</tr>
-									<tr class="timerow" timeType="thisMonth" projectId="{{project.id}}">
-										<td class="tableCellPadding" align="right">
-											<b>This Month: </b>
-										</td>
-										<td>
-											<div class="thisMonth_{{project.id}}"></div>
-										</td>
-									</tr>
-									<tr class="timerow" timeType="overall" projectId="{{project.id}}">
-										<td class="tableCellPadding" align="right">
-											<b>Overall Time: </b>
-										</td>
-										<td>
-											<div class="overalTimeProjectView_{{project.id}}"></div>
-										</td>
-									</tr>
-								</table>
-			                </div>
-			                <div class="col-sm-9 tableDiv_{{project.id}} tableDiv">
-			                    
-			                </div>
 
-			            </div> 
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<a href="#" class="timerow" timeType="last" projectId="{{project.id}}"><b>Last Record: </b><div class="lastRecord_{{project.id}}"></div></a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="timerow" timeType="today" projectId="{{project.id}}"><b>Today: </b><div class="today_{{project.id}}"></div></a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="timerow" timeType="thisWeek" projectId="{{project.id}}"><b>This Week: </b><div class="thisWeek_{{project.id}}"></div></a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="timerow" timeType="thisMonth" projectId="{{project.id}}"><b>This Month: </b><div class="thisMonth_{{project.id}}"></div></a>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="timerow" timeType="overall" projectId="{{project.id}}"><b>Overall: </b><div class="overalTimeProjectView_{{project.id}}"></div></a>
+						</li>
+					</ul>
+
+					<div class="container-fluid" style="min-height:95%; ">
+						<br>
+		                <div class="col-sm-12 tableDiv_{{project.id}} tableDiv">
+		                    
+		                </div>
 					</div>
 					
 				</div>

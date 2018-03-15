@@ -5,6 +5,7 @@
         <title>Timetracking</title>
         <meta charset="utf-8" />
         {% load staticfiles %}
+        <link rel="shortcut icon" href="{% static 'timetracking/img/favicon.ico' %}" type="image/x-icon">
         <link rel="stylesheet" href="{% static 'timetracking/css/bootstrap-3.3.6.min.css' %}" type = "text/css"/>
         <link rel="stylesheet" href="{% static 'timetracking/css/style.css' %}" type = "text/css"/>
         <link rel="stylesheet" href="{% static 'timetracking/css/jquery-ui.min.css' %}" type = "text/css"/>
@@ -81,9 +82,13 @@
                 </div>
             </div> 
         </div>
-        <footer>
-            <div class="container-fluid" style='margin-left:15px'></div>
-        </footer>	
+        <div class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container">
+              <p class="navbar-text">© geeforce - 
+                   <a href="https://github.com/geeforce/timetracking" target="_blank" >Timetracking Django Project on Github</a>
+              </p>
+            </div>
+        </div>
 
     </body>
 
