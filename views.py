@@ -254,7 +254,8 @@ def timeTable(request):
 			else:
 				seconds = str(seconds)
 			trackedTime.delta = hours+":"+minutes+":"+seconds
-		return render(request, 'timetracking/timetable.html',{'trackedTimes':trackedTimes,'project':project.name})
+		form = AccountedForm()
+		return render(request, 'timetracking/timetable.html',{'trackedTimes':trackedTimes,'project':project.name,'form':form})
 	else:
 		form = LoginForm()
 		return render(request, 'registration/login.html',{'form':form})

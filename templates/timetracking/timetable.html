@@ -1,5 +1,6 @@
 {#trackedTimes#}
-
+{% load widget_tweaks %}
+{#{trackedTimes}#}
 <script type="text/javascript">
 	$(document).ready(function() {
 	    $('#timeTable').DataTable({
@@ -23,6 +24,11 @@
 	    });
 	});
 </script>
+
+{% for trackingRow in trackedTimes %}
+    {{trackingRow.accounted}}          
+{% endfor %}
+
 <table id="timeTable" class="display cell-border table table-hover table-striped table-responsive" width="100%" cellspacing="0">
     <thead>
         <tr>
@@ -31,15 +37,17 @@
         	<th>From</th>
         	<th>To</th>
         	<th>Time</th>
+        	<th>Accounted</th>
         </tr>
     </thead>
     <tfoot>
         <tr>
-        	<th>ID</th>
-        	<th>User</th>
-        	<th>From</th>
-        	<th>To</th>
-        	<th>Time</th>
+            <th>ID</th>
+            <th>User</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Time</th>
+            <th>Accounted</th>
         </tr>
     </tfoot>
 	<tbody>
@@ -49,8 +57,9 @@
 				<td>{{trackingRow.user}}</td>
 				<td>{{trackingRow.start|date:"d.m.y - H:i:s"}}</td>
 				<td>{{trackingRow.stop|date:"d.m.y - H:i:s"}}</td>
-				<td>{{trackingRow.delta}}</td>
-			</tr>
+                <td>{{trackingRow.delta}}</td>
+				<td>{{trackingRow.accounted}}{{ form.accounted|add_class:"form-control"|attr:"checked:trackingRow.accounted"}}</td>
+            </tr>
 		{% endfor %}
     </tbody>
 </table>
