@@ -19,8 +19,6 @@
 		$(".timerow").click(function(e){
 			var projectId = $(this).attr("projectId");
 			var timeType = $(this).attr("timeType");
-			$(".timerow").removeClass("active");
-			$(this).addClass("active");
 			$(".tableDiv").empty();
 			$(".tableDiv_"+projectId).load("/timeTable?projectId="+projectId+"&timeType="+timeType,function(fn){ 
 				//alert(fn)
@@ -43,6 +41,11 @@
 		            }
 		        });
 			}
+		});
+		//
+		$(".nav-item").click(function(fn){
+			$(".nav-item").removeClass("active");
+			$(this).addClass("active");
 		});
 	});
 </script>
@@ -69,20 +72,20 @@
 				<div class="panel-body panelBox_{{project.id}} panelBox">
 
 					<ul class="nav nav-tabs">
-						<li class="nav-item">
-							<a href="#" class="timerow" timeType="last" projectId="{{project.id}}"><b>Last Record: </b><div class="lastRecord_{{project.id}}"></div></a>
+						<li class="nav-item"> 
+							<a href="#" class="timerow nav-link active" timeType="last" projectId="{{project.id}}"><b>Last Record: </b><div class="lastRecord_{{project.id}}"></div></a>
 						</li>
 						<li class="nav-item">
-							<a href="#" class="timerow" timeType="today" projectId="{{project.id}}"><b>Today: </b><div class="today_{{project.id}}"></div></a>
+							<a href="#" class="timerow nav-link" timeType="today" projectId="{{project.id}}"><b>Today: </b><div class="today_{{project.id}}"></div></a>
 						</li>
 						<li class="nav-item">
-							<a href="#" class="timerow" timeType="thisWeek" projectId="{{project.id}}"><b>This Week: </b><div class="thisWeek_{{project.id}}"></div></a>
+							<a href="#" class="timerow nav-link" timeType="thisWeek" projectId="{{project.id}}"><b>This Week: </b><div class="thisWeek_{{project.id}}"></div></a>
 						</li>
 						<li class="nav-item">
-							<a href="#" class="timerow" timeType="thisMonth" projectId="{{project.id}}"><b>This Month: </b><div class="thisMonth_{{project.id}}"></div></a>
+							<a href="#" class="timerow nav-link" timeType="thisMonth" projectId="{{project.id}}"><b>This Month: </b><div class="thisMonth_{{project.id}}"></div></a>
 						</li>
 						<li class="nav-item">
-							<a href="#" class="timerow" timeType="overall" projectId="{{project.id}}"><b>Overall: </b><div class="overalTimeProjectView_{{project.id}}"></div></a>
+							<a href="#" class="timerow nav-link" timeType="overall" projectId="{{project.id}}"><b>Overall: </b><div class="overalTimeProjectView_{{project.id}}"></div></a>
 						</li>
 					</ul>
 
