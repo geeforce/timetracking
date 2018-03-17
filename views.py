@@ -37,6 +37,19 @@ def auth_logout(request):
 	return render(request, 'registration/login.html',{'form':form})
 
 @csrf_exempt
+def accountIt(request):
+	if request.user.is_authenticated:
+		trackingId = request.POST['trackingId']
+		accountState = request.POST['accountState']
+		trackingItem = Tracking(id=trackingId)
+		trackingItem.accounted = accountState
+		trackingItem.save(update_fields=['accounted'])
+		return HttpResponse(request)
+	else:
+		form = LoginForm()
+		return render(request, 'registration/login.html',{'form':form})
+
+@csrf_exempt
 def addProject(request):
 	if request.user.is_authenticated:
 		projectName = request.POST['projectName']
@@ -191,7 +204,15 @@ def projects(request):
 			except ObjectDoesNotExist:
 				raise
 			project.monthTime = monthTime
-			#print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  "+str(firstOfThisMonth))
+			# not accounted
+			notAccountedTime = 0
+			try:
+				notAccountedEntries = Tracking.objects.filter(project_id=projectId,accounted=False)
+				for notAccountedEntry in notAccountedEntries:
+					notAccountedTime = notAccountedTime+notAccountedEntry.time
+			except ObjectDoesNotExist:
+				notAccountedTime = 0
+			project.notAccountedTime = notAccountedTime
 		form = AddProjectForm()
 		return render(request, 'timetracking/projects.html',{'projects':projects, 'form':form, 'viewType':viewType})
 	else:
@@ -254,8 +275,7 @@ def timeTable(request):
 			else:
 				seconds = str(seconds)
 			trackedTime.delta = hours+":"+minutes+":"+seconds
-		form = AccountedForm()
-		return render(request, 'timetracking/timetable.html',{'trackedTimes':trackedTimes,'project':project.name,'form':form})
+		return render(request, 'timetracking/timetable.html',{'trackedTimes':trackedTimes,'project':project.name})
 	else:
 		form = LoginForm()
 		return render(request, 'registration/login.html',{'form':form})

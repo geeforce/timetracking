@@ -7,6 +7,3 @@ class LoginForm(forms.Form):
 
 class AddProjectForm(forms.Form):
 	projectName = forms.CharField(label = 'Project', max_length=25)
-
-class AccountedForm(forms.Form):
-	accounted = forms.BooleanField()
