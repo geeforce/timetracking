@@ -212,7 +212,6 @@ def projects(request):
 					notAccountedTime = notAccountedTime+notAccountedEntry.time
 			except ObjectDoesNotExist:
 				notAccountedTime = 0
-			print(str(notAccountedTime)+"  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 			project.notAccountedTime = notAccountedTime
 		form = AddProjectForm()
 		return render(request, 'timetracking/projects.html',{'projects':projects, 'form':form, 'viewType':viewType})
