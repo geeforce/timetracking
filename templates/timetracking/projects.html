@@ -14,7 +14,7 @@
 			todayTime({{project.todayTime}},{{project.id}});
 			weekTime({{project.weekTime}},{{project.id}});
 			monthTime({{project.monthTime}},{{project.id}});
-			notAccountedTime({{project.notAccountedTime}},{{project.id}});
+			//notAccountedTime({{project.notAccountedTime}},{{project.id}});
 		{% endfor %}
 
 		$(".timerow").click(function(e){
@@ -44,15 +44,14 @@
 			}
 		});
 		//
+		{% for project in projects %}
+				console.log("AccountedTime: "+{{project.notAccountedTime}});
+		{% endfor %}
 		
 	});
 </script>
 <style type="text/css"></style>
 
-{% for project in projects %}
-			
-			notAccountedTime({{project.notAccountedTime}},{{project.id}});
-{% endfor %}
 
 <div id="flexboxWrapper">
 	<div class="panel panel-default">
