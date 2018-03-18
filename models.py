@@ -18,7 +18,7 @@ class Tracking(models.Model):
 	start = models.DateTimeField(default=datetime.now())
 	stop = models.DateTimeField(default=None,blank=True,null=True)
 	time = models.IntegerField(default=None,blank=True,null=True)
-	accounted = models.BooleanField(default=False)
+	accounted = models.BooleanField(default=False,blank=True)
 	#visible = models.BooleanField(default=True)
 	def __str__(self):
 		return "("+str(self.id) + ")"
