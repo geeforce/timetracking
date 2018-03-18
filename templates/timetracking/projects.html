@@ -45,12 +45,14 @@
 		});
 		//
 		{% for project in projects %}
-				console.log("AccountedTime: "+{{project.notAccountedTime}});
+			//console.log("Project: {{project}}");
+			console.log("AccountedTime: {{project.notAccountedTime}}");
 		{% endfor %}
 		
 	});
 </script>
 <style type="text/css"></style>
+
 
 
 <div id="flexboxWrapper">
