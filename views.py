@@ -156,7 +156,7 @@ def projects(request):
 
 		for project in projects:
 			projectId = project.id
-			trackedTimes = Tracking.objects.filter(project_id=projectId)
+			trackedTimes = Tracking.objects.filter(project_id=projectId,stop__isnull=False)
 			projectTime = 0
 			for time in trackedTimes:
 				if time.time is not None:
@@ -177,7 +177,7 @@ def projects(request):
 			# today
 			todayTime = 0
 			try:
-				todayEntries = Tracking.objects.filter(project_id=projectId,stop__date=datetime.today())
+				todayEntries = Tracking.objects.filter(project_id=projectId,stop__date=datetime.today(),stop__isnull=False)
 				for todayEntry in todayEntries:
 					todayTime = todayTime+todayEntry.time
 			except ObjectDoesNotExist:
@@ -188,7 +188,7 @@ def projects(request):
 			today = date.today()
 			last_sunday = today - timedelta(days=today.weekday()+1)
 			try:
-				weekEntries = Tracking.objects.filter(project_id=projectId,stop__date__gt=last_sunday)
+				weekEntries = Tracking.objects.filter(project_id=projectId,stop__date__gt=last_sunday,stop__isnull=False)
 				for weekEntry in weekEntries:
 					weekTime = weekTime+weekEntry.time
 			except ObjectDoesNotExist:
@@ -198,7 +198,7 @@ def projects(request):
 			firstOfThisMonth = date.today().replace(day=1)
 			monthTime = 0;
 			try:
-				monthEntries = Tracking.objects.filter(project_id=projectId,stop__date__gt=firstOfThisMonth)
+				monthEntries = Tracking.objects.filter(project_id=projectId,stop__date__gt=firstOfThisMonth,stop__isnull=False)
 				for monthEntry in monthEntries:
 					monthTime = monthTime+monthEntry.time
 			except ObjectDoesNotExist:
@@ -207,7 +207,7 @@ def projects(request):
 			# not accounted
 			notAccountedTime = 0
 			try:
-				notAccountedEntries = Tracking.objects.filter(project_id=projectId,accounted=False)
+				notAccountedEntries = Tracking.objects.filter(project_id=projectId,accounted=False,stop__isnull=False)
 				for notAccountedEntry in notAccountedEntries:
 					notAccountedTime = notAccountedTime+notAccountedEntry.time
 			except ObjectDoesNotExist:
@@ -250,6 +250,12 @@ def timeTable(request):
 			firstOfThisMonth = date.today().replace(day=1)
 			try:
 				trackedTimes = Tracking.objects.filter(project_id=projectId,stop__date__gt=firstOfThisMonth).order_by('-id')
+			except ObjectDoesNotExist:
+				trackedTimes = None
+
+		if timeType == "notAccounted":
+			try:
+				trackedTimes = Tracking.objects.filter(project_id=projectId,accounted=False,stop__isnull=False).order_by('-id')
 			except ObjectDoesNotExist:
 				trackedTimes = None
 		

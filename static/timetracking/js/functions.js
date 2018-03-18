@@ -57,6 +57,11 @@ function monthTime(seconds,projectId){
 	var timeString = timeFromSeconds(seconds);
 	$(".thisMonth_"+projectId).text(timeString.hours+":"+timeString.minutes+":"+timeString.seconds);
 }
+function notAccountedTime(seconds,projectId){
+	var timeString = timeFromSeconds(seconds);
+	$(".notAccountedTime_"+projectId).text(timeString.hours+":"+timeString.minutes+":"+timeString.seconds);
+}
+
 // add project
 $("#addProject").click(function(){
 	var projectName = $(".projectName").val().trim();
