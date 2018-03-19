@@ -5,6 +5,8 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		//
+		activeTrackingId = {{openTrackingId}};
+		//alert(activeTrackingId);
 		timer = false;
 		$(".startTrack").click(function(){
 			var projectId = $(this).attr("projectId");
@@ -22,9 +24,13 @@
                 type: "POST",
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 data: data,
-                success: function (fn) {}
+                success: function (fn) {
+                	activeTrackingId = fn.trackingEntryId;
+                }
             });
-
+            //show comment box
+            $(".commentBox_"+projectId).show();
+            //
 			$(".stopTrack").attr("disabled","disabled");
 			$(".startTrack, .stopBtn_"+projectId).removeAttr("disabled");
 			$(this).attr("disabled","disabled");
@@ -62,14 +68,14 @@
             $(this).attr("disabled","disabled");
 			$(".startBtn_"+projectId).attr("disabled",false);
 			$(".panelBox_"+projectId).removeClass("activeTimerBox");
+			 $(".commentBox_"+projectId).hide();
 			clearInterval(timer);
 			$('.seconds_'+projectId).text("00");
 			$('.minutes_'+projectId).text("00");
 			$('.hours_'+projectId).text("00");
 			
 		});
-
-
+		//
 		function convertDate(toConvertDate) {
 			if(toConvertDate != "None"){
 		    	var dateTimeBlock = toConvertDate.split(" ");
@@ -85,11 +91,7 @@
 		    	//console.log(year+","+month+","+day+","+hours+","+minutes+","+seconds);
 			}
 		    return toConvertDate;  
-		    //return formattedDate + ' ' + hours + ':' + minutes+":"+seconds+" UTC"; 
 		}
-		
-
-
 		// set static overall time and already running timer
 		{% for project in projects %}
 			//convertedDate = convertDate("{{project.openStart}}");
@@ -99,12 +101,11 @@
 			staticOverallTime({{project.time}},{{project.id}});
 			alreadyRunning({{project.id}},"{{project.openStart}}");
 		{% endfor %}
-
 		// add project
 		$("#addProject").click(function(){
 			var projectName = $(".projectName").val().trim();
 			if(projectName != ""){
-				var data = 'projectName=' + projectName + '&viewType={{projects.viewType}}';
+				var data = 'projectName=' + encodeURIComponent(projectName) + '&viewType={{projects.viewType}}';
 		        $.ajax({
 		            url: "/addProject",
 		            type: "POST",
@@ -115,6 +116,21 @@
 		            }
 		        });
 			}
+		});
+		//
+		$(".trackingComment").on('focus',function(){
+			$(this).attr("value","");
+			$(this).on('keyup',function(){
+				var comment = $(this).val().trim();
+				var data = 'trackingId=' + activeTrackingId + '&comment='+encodeURIComponent(comment);
+		        $.ajax({
+		            url: "/addComment",
+		            type: "POST",
+		            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		            data: data,
+		            success: function (fn) {}
+		        });
+			});
 		});
 	});
 </script>
@@ -139,41 +155,52 @@
 		<div class="panel panel-default">
 			<div class="panel-heading panelHead_{{project.id}} panelHead"><b>{{project.name}}</b></div>
 				<div class="panel-body panelBox_{{project.id}} panelBox">
-					<table>
-						<tr>
-							<td class="tableCellPadding">
-								<button type="button" class="btn btn-default btn-lg startTrack startBtn_{{project.id}}" projectId="{{project.id}}">
-									<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-								</button>
-							</td>
-							<td class="tableCellPadding">
-								<button type="button" class="btn btn-default btn-lg stopTrack stopBtn_{{project.id}}" projectId="{{project.id}}" disabled="disabled">
-									<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-								</button>
-							</td>
-							<td class="tableCellPadding">
-								<div class="currentTimeWrapper">
-									<div class="currentTimeRow">
-										<div class="currentTimeHours hours_{{project.id}} timeString">
-											00
+					
+					<div class="container">
+					  <div class="row align-items-center">
+					    <div class="col-sm-5">
+							<table border="0">
+								<tr>
+									<td class="tableCellPadding">
+										<button type="button" class="btn btn-default btn-lg startTrack startBtn_{{project.id}}" projectId="{{project.id}}">
+											<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+										</button>
+									</td>
+									<td class="tableCellPadding">
+										<button type="button" class="btn btn-default btn-lg stopTrack stopBtn_{{project.id}}" projectId="{{project.id}}" disabled="disabled">
+											<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+										</button>
+									</td>
+									<td class="tableCellPadding">
+										<div class="currentTimeWrapper" align="left">
+											<div class="currentTimeRow">
+												<div class="currentTimeHours hours_{{project.id}} timeString">
+													00
+												</div>
+												<div class="currentTimeDevider timeString">
+													:
+												</div>
+												<div class="currentTimeMinutes minutes_{{project.id}} timeString">
+													00
+												</div>
+												<div class="currentTimeDevider timeString">
+													:
+												</div>
+												<div class="currentTimeSeconds seconds_{{project.id}} timeString">
+													00
+												</div>
+											</div>
 										</div>
-										<div class="currentTimeDevider timeString">
-											:
-										</div>
-										<div class="currentTimeMinutes minutes_{{project.id}} timeString">
-											00
-										</div>
-										<div class="currentTimeDevider timeString">
-											:
-										</div>
-										<div class="currentTimeSeconds seconds_{{project.id}} timeString">
-											00
-										</div>
-									</div>
-								</div>
-							</td>
-						</tr>
-					</table>
+									</td>
+									
+								</tr>
+							</table>
+					    </div>
+					    <div class="col-sm-6 commentBox_{{project.id}} commentBox" projectId="{{project.id}}">
+					    	<div style="margin-top: 15px">{{commentForm.addComment|add_class:"form-control trackingComment"|attr:"value:Insert Comment"}}</div>
+					    </div>
+					  </div>
+					</div>
 				</div>
 			<div class="panel-footer overalTime_{{project.id}}"></div>
 		</div>

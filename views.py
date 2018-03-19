@@ -58,7 +58,7 @@ def addProject(request):
 		newProject = Project(name=projectName)
 		newProject.save()
 		newUserProject = UserProject(project=newProject,user=request.user)
-		newUserProject.save()
+		newUserProject.save(update_fields=['comment'])
 		#return HttpResponseRedirect('projects/?viewType='+viewType)
 		return HttpResponse(request)
 	else:
@@ -69,7 +69,7 @@ def addProject(request):
 def tracking(request):
 	if request.user.is_authenticated:
 		userId = request.user.id
-		
+		openTrackingId = 0;
 		projects = Project.objects.filter(visible=True,userproject__user=request.user).order_by('-last_update')
 		for project in projects:
 			projectId = project.id
@@ -84,8 +84,10 @@ def tracking(request):
 			openTrackingEntries = Tracking.objects.filter(project_id=projectId,stop__isnull=True,user_id=request.user.id)
 			for openEntry in openTrackingEntries:
 				project.openStart = str(openEntry.start)
+				openTrackingId =  str(openEntry.id)
 		form = AddProjectForm()
-		return render(request, 'timetracking/tracking.html',{'projects':projects, 'form':form})
+		commentForm = AddTrackingCommentForm
+		return render(request, 'timetracking/tracking.html',{'projects':projects,'openTrackingId':openTrackingId, 'form':form, 'commentForm':commentForm})
 
 	else:
 		form = LoginForm()
@@ -102,7 +104,8 @@ def startTrack(request):
 		#insert start track entry
 		newTrackingEntry = Tracking(project_id=project.id,start=datetime.now(timezone.utc),user_id=request.user.id)
 		newTrackingEntry.save()
-	return HttpResponse(request)
+		newTrackingEntryId = newTrackingEntry.id
+	return JsonResponse({'trackingEntryId':newTrackingEntryId})
 
 @csrf_exempt
 def stopTrack(request):
@@ -127,6 +130,18 @@ def stopTrack(request):
 			if time.time is not None:
 				projectTime = projectTime+time.time
 		return JsonResponse({'projectTime':projectTime})
+	else:
+		return HttpResponse(request)
+
+@csrf_exempt
+def addComment(request):
+	if request.user.is_authenticated:
+		trackingId = request.POST['trackingId']
+		comment = request.POST['comment']
+		trackingEntry = Tracking.objects.get(id=trackingId)
+		trackingEntry.comment = comment
+		trackingEntry.save()
+		return HttpResponse(request)
 	else:
 		return HttpResponse(request)
 

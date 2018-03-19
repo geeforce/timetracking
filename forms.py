@@ -6,4 +6,7 @@ class LoginForm(forms.Form):
 	password = forms.CharField(label = 'Password', max_length=25, widget=forms.PasswordInput)
 
 class AddProjectForm(forms.Form):
-	projectName = forms.CharField(label = 'Project', max_length=25)
+	projectName = forms.CharField(label = 'Project', max_length=255)
+
+class AddTrackingCommentForm(forms.Form):
+	addComment = forms.CharField(label = 'Add Comment')

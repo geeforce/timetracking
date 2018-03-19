@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'logout', views.auth_logout, name='logout'),
     url(r'addProject', views.addProject, name='addProject'),
     url(r'accountIt', views.accountIt, name='accountIt'),
+    url(r'addComment', views.addComment, name='addComment'),
 ]
