@@ -284,4 +284,4 @@ def timeTable(request):
 		return render(request, 'timetracking/timetable.html',{'trackedTimes':trackedTimes,'project':project.name})
 	else:
 		form = LoginForm()
-		return render(request, 'registration/login.html',{'form':form})
+		return render(request, 'registration/login.html',{'form':form}) 
