@@ -50,7 +50,8 @@
         	<th>User</th>
         	<th>From</th>
         	<th>To</th>
-        	<th>Time</th>
+            <th>Time</th>
+        	<th>Comment</th>
         	<th>Accounted</th>
         </tr>
     </thead>
@@ -61,6 +62,7 @@
             <th>From</th>
             <th>To</th>
             <th>Time</th>
+            <th>Comment</th>
             <th>Accounted</th>
         </tr>
     </tfoot>
@@ -72,6 +74,14 @@
 				<td>{{trackingRow.start|date:"d.m.y - H:i:s"}}</td>
 				<td>{{trackingRow.stop|date:"d.m.y - H:i:s"}}</td>
                 <td>{{trackingRow.delta}}</td>
+
+                {% if trackingRow.comment == "False" or not trackingRow.comment %}
+                    <td></td>
+                {% else %}
+                    <td>{{trackingRow.comment}}</td>
+                {% endif %}
+
+                <!--td>{{trackingRow.comment}}</td-->
 				<td><input type="checkbox" class="form-control accountedCheck" trackingId="{{trackingRow.id}}" {% if trackingRow.accounted %}checked{% endif %}></td>
             </tr>
 		{% endfor %}

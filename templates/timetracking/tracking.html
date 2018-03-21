@@ -1,9 +1,9 @@
 {% extends "timetracking/mainsite.html" %}
 {% load widget_tweaks %}
 {% block content %}
-<!--p>{{ projects }}</p-->
 <script type="text/javascript">
 	$(document).ready(function() {
+		$.ajax({cache: false});
 		//
 		activeTrackingId = {{openTrackingId}};
 		//alert(activeTrackingId);
@@ -30,6 +30,7 @@
             });
             //show comment box
             $(".commentBox_"+projectId).show();
+            $(".trackingComment").val("Insert Comment");
             //
 			$(".stopTrack").attr("disabled","disabled");
 			$(".startTrack, .stopBtn_"+projectId).removeAttr("disabled");
@@ -62,6 +63,7 @@
                 success: function (projectTime) {
                 	// set overall time
                 	staticOverallTime(projectTime.projectTime,projectId);
+                	$(".commentBox").hide();
                 }
             });
 
@@ -99,7 +101,7 @@
 			//var newDate = new Date(convertedDate);
 			//console.log(newDate)
 			staticOverallTime({{project.time}},{{project.id}});
-			alreadyRunning({{project.id}},"{{project.openStart}}");
+			alreadyRunning({{project.id}},"{{project.openStart}}","{{openTrackingComment}}");
 		{% endfor %}
 		// add project
 		$("#addProject").click(function(){
@@ -119,7 +121,9 @@
 		});
 		//
 		$(".trackingComment").on('focus',function(){
-			$(this).attr("value","");
+			if($(this).val() == "Insert Comment"){
+				$(this).val("");
+			}
 			$(this).on('keyup',function(){
 				var comment = $(this).val().trim();
 				var data = 'trackingId=' + activeTrackingId + '&comment='+encodeURIComponent(comment);
@@ -197,7 +201,7 @@
 							</table>
 					    </div>
 					    <div class="col-sm-6 commentBox_{{project.id}} commentBox" projectId="{{project.id}}">
-					    	<div style="margin-top: 15px">{{commentForm.addComment|add_class:"form-control trackingComment"|attr:"value:Insert Comment"}}</div>
+					    	<div style="margin-top: 15px">{{commentForm.addComment|add_class:"form-control trackingComment"}}</div>
 					    </div>
 					  </div>
 					</div>
@@ -207,4 +211,7 @@
 	</div>
 	{% endfor %}
 </div>
+<script type="text/javascript">
+	//$(".trackingComment").val("foobar");
+</script>
 {% endblock %}

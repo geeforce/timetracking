@@ -69,7 +69,8 @@ def addProject(request):
 def tracking(request):
 	if request.user.is_authenticated:
 		userId = request.user.id
-		openTrackingId = 0;
+		openTrackingId = 0
+		openTrackingComment = ""
 		projects = Project.objects.filter(visible=True,userproject__user=request.user).order_by('-last_update')
 		for project in projects:
 			projectId = project.id
@@ -85,9 +86,10 @@ def tracking(request):
 			for openEntry in openTrackingEntries:
 				project.openStart = str(openEntry.start)
 				openTrackingId =  str(openEntry.id)
+				openTrackingComment = openEntry.comment
 		form = AddProjectForm()
 		commentForm = AddTrackingCommentForm
-		return render(request, 'timetracking/tracking.html',{'projects':projects,'openTrackingId':openTrackingId, 'form':form, 'commentForm':commentForm})
+		return render(request, 'timetracking/tracking.html',{'projects':projects,'openTrackingId':openTrackingId,'openTrackingComment':openTrackingComment, 'form':form, 'commentForm':commentForm})
 
 	else:
 		form = LoginForm()
