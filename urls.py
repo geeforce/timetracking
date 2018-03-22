@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 from django.urls import path
 from . import views
-from django.views.generic import ListView, DetailView
+from django.views.generic import TemplateView
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'addProject', views.addProject, name='addProject'),
     url(r'accountIt', views.accountIt, name='accountIt'),
     url(r'addComment', views.addComment, name='addComment'),
+    url(r'test', TemplateView.as_view(template_name='timetracking/test.html')),
 ]
