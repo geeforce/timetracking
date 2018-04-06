@@ -1,0 +1,68 @@
+{% extends "timetracking/mainsite.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<!--p>{{ values }}</p-->
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		$(".toggleDisplayInput").click(function(){
+
+			toggleDisplayInput($(this));
+			
+			/*
+			var thisText = $(this).text();
+			if(thisText != ""){
+				$(this).removeClass("boldHeadline").html('<input type="text" class="inputField" value="'+thisText+'">');
+			}
+			$(".inputField").on('keyup',function(){
+				var thisText = $(this).val();
+			}).on('keypress',function(event){
+				if(event.which == 13){
+					$(this).parent(".toggleDisplayInput").html($(this).val());
+				}
+			}).on('focusout',function(){
+				$(this).parent(".toggleDisplayInput").html(thisText);
+			});*/
+
+		}
+
+		);
+
+		function toggleDisplayInput(clickElement){
+
+			var thisText = clickElement.text();
+			if(thisText != ""){
+				clickElement.removeClass("boldHeadline").html('<input type="text" class="inputField" value="'+thisText+'">');
+			}
+			$(".inputField").on('keyup',function(){
+				var thisText = $(this).val();
+			}).on('keypress',function(event){
+				if(event.which == 13){
+					$(this).parent(".toggleDisplayInput").html($(this).val());
+				}
+			}).on('focusout',function(){
+				$(this).parent(".toggleDisplayInput").html(thisText);
+			});
+
+		}
+
+	});
+</script>
+<style type="text/css">
+	.boldHeadline{
+		font-weight: bold;
+	}
+</style>
+
+<div class="toggleDisplayInput boldHeadline">foobidoobieh</div>
+<br>
+<div class="toggleDisplayInput boldHeadline">abcd</div>
+<!--br>
+<div class="toggleDisplayInput boldHeadline">efg</div>
+<br>
+<div class="toggleDisplayInput boldHeadline">hij</div-->
+
+
+
+
+{% endblock %}

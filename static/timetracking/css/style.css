@@ -1,26 +1,32 @@
 #flexboxWrapper {
-		width:100%;
-		display:flex;
-		flex-direction: column;
-	}
-	.currentTimeWrapper{
-		display:table;
-	}
-	.currentTimeRow{
-		display:table-row;
-	}
-	.currentTimeHours, .currentTimeMinutes, .currentTimeSeconds, .currentTimeDevider{
-		display:table-cell;
-		font-size: 2.5em;
-		color: grey;
-	}
-	.tableCellPadding{
-		padding: 5px;
-	}
-	.activeTimerBox{
-		background-color: #ccffee;
-	}
-	.tableProjectTimes{
-		width:100%;
-		cursor:pointer;
-	}
+	width:100%;
+	display:flex;
+	flex-direction: column;
+}
+.currentTimeWrapper{
+	display:table;
+}
+.currentTimeRow{
+	display:table-row;
+}
+.currentTimeHours, .currentTimeMinutes, .currentTimeSeconds, .currentTimeDevider{
+	display:table-cell;
+	font-size: 2.5em;
+	color: grey;
+}
+.tableCellPadding{
+	padding: 5px;
+}
+.activeTimerBox{
+	background-color: #ccffee;
+}
+.tableProjectTimes{
+	width:100%;
+	cursor:pointer;
+}
+.trackingComment{
+	color: grey;
+}
+.commentBox{
+	display:none;
+}

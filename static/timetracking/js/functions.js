@@ -27,13 +27,19 @@ function runTimer(startTime,projectId){
 		$('.hours_'+projectId).text(timeString.hours);
 	}, 1000);
 } 
-function alreadyRunning(projectId,openStart){
+function alreadyRunning(projectId,openStart,comment){
 	if(openStart != "None"){
 		var start = new Date(openStart);
 		runTimer(start,projectId);
 		$(".panelBox_"+projectId).addClass("activeTimerBox");
 		$(".stopBtn_"+projectId).removeAttr("disabled");
 		$(".startBtn_"+projectId).attr("disabled","disabled");
+		//console.log(comment)
+		if(comment == "" || comment == "None"){
+			comment = "Insert Comment";
+		}
+		$(".commentBox_"+projectId).show();
+		$(".trackingComment").val(comment);
 	}
 }
 function staticOverallTime(seconds,projectId){
