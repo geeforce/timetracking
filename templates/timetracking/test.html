@@ -4,30 +4,10 @@
 <!--p>{{ values }}</p-->
 <script type="text/javascript">
 	$(document).ready(function() {
-<<<<<<< HEAD
 		
 		$(".toggleDisplayInput").click(function(){
-
 			toggleDisplayInput($(this));
-			
-			/*
-			var thisText = $(this).text();
-			if(thisText != ""){
-				$(this).removeClass("boldHeadline").html('<input type="text" class="inputField" value="'+thisText+'">');
-			}
-			$(".inputField").on('keyup',function(){
-				var thisText = $(this).val();
-			}).on('keypress',function(event){
-				if(event.which == 13){
-					$(this).parent(".toggleDisplayInput").html($(this).val());
-				}
-			}).on('focusout',function(){
-				$(this).parent(".toggleDisplayInput").html(thisText);
-			});*/
-
-		}
-
-		);
+		});
 
 		function toggleDisplayInput(clickElement){
 
@@ -42,8 +22,8 @@
 					$(this).parent(".toggleDisplayInput").html($(this).val());
 				}
 			}).on('focusout',function(){
-				$(this).parent(".toggleDisplayInput").html(thisText);
-			});
+				$(this).parent(".toggleDisplayInput").html(thisText).addClass("boldHeadline");
+			}).focus();
 
 		}
 
@@ -62,48 +42,6 @@
 <div class="toggleDisplayInput boldHeadline">efg</div>
 <br>
 <div class="toggleDisplayInput boldHeadline">hij</div-->
-
-
-=======
-		$(".textLayer").click(function(){
-			var thisText = $(this).text();
-			$(this).hide();
-			$(this).next(".inputLayer").show();
-			var inputField = $(this).next(".inputLayer").children(".inputField");
-			inputField.val(thisText);
-
-		});
-		
-	});
-</script>
-<style type="text/css">
-	.inputTextWrapper{
-		border: 0px solid red;
-		position: relative;
-	}
-	.textLayer{
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		z-index: 1;
-	}
-	.inputLayer{
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		display: none;
-		border: 0px solid red;
-	}
-</style>
-
-
-
-<div class="inputTextWrapper">
-	<div class="textLayer">Input text</div>
-	<div class="inputLayer"><input type="text" class="inputField"></div>
-</div>
-
->>>>>>> f3fefc00a45d1909161c82d08d15d1dcfa16b7ce
 
 
 {% endblock %}
