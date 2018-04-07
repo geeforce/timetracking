@@ -31,7 +31,7 @@
 		$("#addProject").click(function(){
 			var projectName = $(".projectName").val().trim();
 			if(projectName != ""){
-				var data = 'projectName=' + projectName + '&viewType={{projects.viewType}}';
+				var data = 'projectName=' + encodeURIComponent(projectName) + '&viewType={{projects.viewType}}';
 		        $.ajax({
 		            url: "/addProject",
 		            type: "POST",
@@ -47,6 +47,10 @@
 		$(".nav-item").click(function(fn){
 			$(".nav-item").removeClass("active");
 			$(this).addClass("active");
+		});
+		$(".toggleDisplayInput").click(function(){
+			var projectId = $(this).attr("projectId");
+			toggleDisplayInput($(this),projectId,"changeProjectName");
 		});
 	});
 </script>
@@ -68,7 +72,7 @@
 	{% for project in projects %}
 	<div class="projectBox" style="order:{{forloop.counter}}" projectId="{{project.id}}">
 		<div class="panel panel-default">
-			<div class="panel-heading panelHead_{{project.id}} panelHead"><b>{{project.name}}</b></div>
+			<div class="panel-heading panelHead_{{project.id}} panelHead" projectId="{{project.id}}"><div class="toggleDisplayInput boldHeadline pointThis">{{project.name}}</div></div>
 				<div class="panel-body panelBox_{{project.id}} panelBox">
 
 					<ul class="nav nav-tabs">

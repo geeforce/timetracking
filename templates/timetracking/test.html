@@ -10,31 +10,6 @@
 			toggleDisplayInput($(this),projectId,"changeProjectName");
 		});
 
-		function toggleDisplayInput(clickElement,thisId,sendDest){
-
-			var thisText = clickElement.text();
-			if(thisText != ""){
-				clickElement.removeClass("boldHeadline").html('<input type="text" class="inputField" value="'+thisText+'">');
-			}
-			$(".inputField").on('keyup',function(){
-				var thisText = $(this).val();
-			}).on('keypress',function(event){
-				if(event.which == 13){
-					sendToggleInsert("changeProjectName",thisId,sendDest);
-					$(this).parent(".toggleDisplayInput").html($(this).val()).addClass("boldHeadline");
-				}
-			}).on('focusout',function(){
-				$(this).parent(".toggleDisplayInput").html(thisText).addClass("boldHeadline");
-			}).focus();
-
-		}
-
-		function sendToggleInsert(dest,id,content){
-			console.log("dest: "+dest);
-			console.log("id: "+id);
-			console.log("dest: "+content);
-		}
-
 	});
 </script>
 <style type="text/css">

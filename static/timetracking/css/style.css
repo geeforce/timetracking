@@ -31,5 +31,8 @@
 	display:none;
 }
 .pointThis{
-	cursor: : pointer;
+	cursor:pointer;
+}
+.boldHeadline{
+	font-weight: bold;
 }
