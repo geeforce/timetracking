@@ -6,10 +6,11 @@
 	$(document).ready(function() {
 		
 		$(".toggleDisplayInput").click(function(){
-			toggleDisplayInput($(this));
+			var projectId = $(this).attr("projectId");
+			toggleDisplayInput($(this),projectId,"changeProjectName");
 		});
 
-		function toggleDisplayInput(clickElement){
+		function toggleDisplayInput(clickElement,thisId,sendDest){
 
 			var thisText = clickElement.text();
 			if(thisText != ""){
@@ -19,12 +20,19 @@
 				var thisText = $(this).val();
 			}).on('keypress',function(event){
 				if(event.which == 13){
-					$(this).parent(".toggleDisplayInput").html($(this).val());
+					sendToggleInsert("changeProjectName",thisId,sendDest);
+					$(this).parent(".toggleDisplayInput").html($(this).val()).addClass("boldHeadline");
 				}
 			}).on('focusout',function(){
 				$(this).parent(".toggleDisplayInput").html(thisText).addClass("boldHeadline");
 			}).focus();
 
+		}
+
+		function sendToggleInsert(dest,id,content){
+			console.log("dest: "+dest);
+			console.log("id: "+id);
+			console.log("dest: "+content);
 		}
 
 	});
@@ -35,9 +43,9 @@
 	}
 </style>
 
-<div class="toggleDisplayInput boldHeadline">foobidoobieh</div>
+<div class="toggleDisplayInput boldHeadline pointThis" projectId="1">foobidoobieh</div>
 <br>
-<div class="toggleDisplayInput boldHeadline">abcd</div>
+<div class="toggleDisplayInput boldHeadline pointThis" projectId="2">abcd</div>
 <!--br>
 <div class="toggleDisplayInput boldHeadline">efg</div>
 <br>

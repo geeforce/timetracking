@@ -30,3 +30,6 @@
 .commentBox{
 	display:none;
 }
+.pointThis{
+	cursor: : pointer;
+}
