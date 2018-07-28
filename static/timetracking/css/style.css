@@ -30,3 +30,9 @@
 .commentBox{
 	display:none;
 }
+.pointThis{
+	cursor:pointer;
+}
+.boldHeadline{
+	font-weight: bold;
+}

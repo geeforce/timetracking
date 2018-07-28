@@ -58,7 +58,7 @@ def addProject(request):
 		newProject = Project(name=projectName)
 		newProject.save()
 		newUserProject = UserProject(project=newProject,user=request.user)
-		newUserProject.save(update_fields=['comment'])
+		newUserProject.save()
 		#return HttpResponseRedirect('projects/?viewType='+viewType)
 		return HttpResponse(request)
 	else:
@@ -302,3 +302,17 @@ def timeTable(request):
 	else:
 		form = LoginForm()
 		return render(request, 'registration/login.html',{'form':form}) 
+
+@csrf_exempt
+def changeProjectName(request):
+	if request.user.is_authenticated:
+		projectId = request.POST['changeId']
+		projectName = request.POST['changeContent']
+		toChangeProject = Project.objects.get(id=projectId)
+		toChangeProject.name = projectName
+		toChangeProject.save(update_fields=['name'])
+		return HttpResponse(request)
+	else:
+		form = LoginForm()
+		return render(request, 'registration/login.html',{'form':form})
+

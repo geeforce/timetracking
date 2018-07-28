@@ -85,3 +85,34 @@ $("#addProject").click(function(){
         });
 	}
 });
+function toggleDisplayInput(clickElement,thisId,sendDest){
+	var thisText = clickElement.text();
+	if(thisText != ""){
+		clickElement.removeClass("boldHeadline").html('<input type="text" class="inputField" value="'+thisText+'">');
+	}
+	$(".inputField").on('keyup',function(){
+		var thisText = $(this).val();
+	}).on('keypress',function(event){
+		if(event.which == 13){
+			sendToggleInsert(sendDest,thisId,$(this).val());
+			$(this).parent(".toggleDisplayInput").html($(this).val()).addClass("boldHeadline");
+		}
+	}).on('focusout',function(){
+		$(this).parent(".toggleDisplayInput").html(thisText).addClass("boldHeadline");
+	}).focus();
+
+}
+
+function sendToggleInsert(dest,id,content){
+	var data = 'changeId=' + id + '&changeContent='+encodeURIComponent(content);
+        $.ajax({
+            url: "/"+dest,
+            type: "POST",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            data: data,
+            success: function (fn) {
+            	//window.location.reload(true);
+            }
+        });
+	return false;
+}

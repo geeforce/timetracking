@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'addProject', views.addProject, name='addProject'),
     url(r'accountIt', views.accountIt, name='accountIt'),
     url(r'addComment', views.addComment, name='addComment'),
+    url(r'changeProjectName', views.changeProjectName, name='changeProjectName'),
     url(r'test', TemplateView.as_view(template_name='timetracking/test.html')),
 ]

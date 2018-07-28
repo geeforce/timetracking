@@ -4,44 +4,27 @@
 <!--p>{{ values }}</p-->
 <script type="text/javascript">
 	$(document).ready(function() {
-		$(".textLayer").click(function(){
-			var thisText = $(this).text();
-			$(this).hide();
-			$(this).next(".inputLayer").show();
-			var inputField = $(this).next(".inputLayer").children(".inputField");
-			inputField.val(thisText);
-
-		});
 		
+		$(".toggleDisplayInput").click(function(){
+			var projectId = $(this).attr("projectId");
+			toggleDisplayInput($(this),projectId,"changeProjectName");
+		});
+
 	});
 </script>
 <style type="text/css">
-	.inputTextWrapper{
-		border: 0px solid red;
-		position: relative;
-	}
-	.textLayer{
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		z-index: 1;
-	}
-	.inputLayer{
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		display: none;
-		border: 0px solid red;
+	.boldHeadline{
+		font-weight: bold;
 	}
 </style>
 
-
-
-<div class="inputTextWrapper">
-	<div class="textLayer">Input text</div>
-	<div class="inputLayer"><input type="text" class="inputField"></div>
-</div>
-
+<div class="toggleDisplayInput boldHeadline pointThis" projectId="1">foobidoobieh</div>
+<br>
+<div class="toggleDisplayInput boldHeadline pointThis" projectId="2">abcd</div>
+<!--br>
+<div class="toggleDisplayInput boldHeadline">efg</div>
+<br>
+<div class="toggleDisplayInput boldHeadline">hij</div-->
 
 
 {% endblock %}
